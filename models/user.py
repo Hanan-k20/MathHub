@@ -19,7 +19,9 @@ class UserModel(BaseModel):
   profile = Column(String)
 
   # RELATIONSHIPS
-  problems = relationship('problemModel', back_populates='user', cascade="all, delete-orphan")
+  problems = relationship('ProblemModel', back_populates='user', cascade="all, delete-orphan")
+  solutions = relationship('SolutionModel', back_populates='user', cascade="all, delete-orphan")
+  votes = relationship('VoteModel', back_populates='user', cascade="all, delete-orphan")
 
 
   # INSTANCE METHODS

@@ -17,4 +17,4 @@ class VoteModel(BaseModel):
   solution = relationship("SolutionModel", back_populates="votes")
 
   user_id = Column(Integer, ForeignKey('users.id',  ondelete="CASCADE"), nullable=False)
-  user = relationship('UserModel', back_populates='comments')
+  user = relationship('UserModel', back_populates='votes')
