@@ -1,6 +1,6 @@
 # data/tea_data.py
 
-from models.tea import TeaModel
+from models.problem import TeaModel
 from models.comment import CommentModel
 
 # Add a user_id to link each tea to a specific user

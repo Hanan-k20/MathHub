@@ -2,23 +2,24 @@
 
 from pydantic import BaseModel
 from typing import Optional, List
-from .comment import CommentSchema
+from .solution import SolutionSchema
 from .user import UserSchema
 
 # Whenever we send out json this will be our response
-class TeaSchema(BaseModel):
+class ProblemSchema(BaseModel):
   id: Optional[int] = True # This makes sure you don't have to explicitly add an id when sending json data
-  name: str
-  in_stock: bool
-  rating: int
+  title: str
+  equation_LaTeX: str
+  ai_Solution: str
+  created_At: datatime
   user: UserSchema
-  comments: List[CommentSchema] = []
+  Solutions: List[SolutionSchema] = []
 
   class Config:
     orm_mode = True
 
 # These two below are specifically for req.body
-class CreateTeaSchema(BaseModel):
+class CreateProblemSchema(BaseModel):
   name: str
   in_stock: bool
   rating: int
@@ -26,7 +27,7 @@ class CreateTeaSchema(BaseModel):
   class Config:
     orm_mode = True
 
-class UpdateTeaSchema(BaseModel):
+class UpdateProblemSchema(BaseModel):
   name: str
   in_stock: bool
   rating: int
