@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException
 
 # SQL Alchemy
 from sqlalchemy.orm import Session
-from models.problem import TeaModel
+from models.problem import ProblemModel
 from models.user import UserModel
 # Serializers
-from serializers.problem import TeaSchema, CreateTeaSchema, UpdateTeaSchema
+from serializers.problem import ProblemSchema, CreateProblemSchema, UpdateProblemSchema
 from typing import List
 # Database Connection
 from database import get_db
@@ -15,61 +15,61 @@ from dependencies.get_current_user import get_current_user
 router = APIRouter()
 
 
-@router.get("/teas", response_model=List[TeaSchema])
-def get_teas(db: Session = Depends(get_db)):
-    # Get all teas
-    teas = db.query(TeaModel).all()
-    return teas
+@router.get("/problems", response_model=List[ProblemSchema])
+def get_problems(db: Session = Depends(get_db)):
+    # Get all
+    problems = db.query(ProblemModel).all()
+    return problems
 
-@router.get("/teas/{tea_id}", response_model=TeaSchema)
-def get_single_tea(tea_id: int, db: Session = Depends(get_db)):
-    tea = db.query(TeaModel).filter(TeaModel.id == tea_id).first()
+@router.get("/problems/{problem_id}", response_model=ProblemSchema)
+def get_single_problem(problem_id: int, db: Session = Depends(get_db)):
+    problem = db.query(ProblemModel).filter(ProblemModel.id == problem_id).first()
 
-    if not tea:
-        raise HTTPException(status_code=404, detail="Tea not found")
+    if not problem:
+        raise HTTPException(status_code=404, detail="problem not found")
 
-    return tea
+    return problem
 
-@router.post('/teas', response_model=TeaSchema)
-def create_tea(tea: CreateTeaSchema,  db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
-    new_tea = TeaModel(**tea.dict(), user_id=current_user.id)
-    db.add(new_tea)
+@router.post('/problems', response_model=ProblemSchema)
+def create_problem(problem: CreateProblemSchema,  db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    new_problem = ProblemModel(**problem.dict(), user_id=current_user.id)
+    db.add(new_problem)
     db.commit()
-    db.refresh(new_tea)
+    db.refresh(new_problem)
 
-    return new_tea
+    return new_problem
 
-@router.put('/teas/{tea_id}', response_model=TeaSchema)
-def update_tea(tea_id: int, tea: UpdateTeaSchema, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
-    db_tea  = db.query(TeaModel).filter(TeaModel.id == tea_id).first()
+@router.put('/problems/{problem_id}', response_model=ProblemSchema)
+def update_problem(problem_id: int, problem: UpdateProblemSchema, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    db_problem  = db.query(ProblemModel).filter(ProblemModel.id == problem_id).first()
 
-    if not db_tea:
-        raise HTTPException(status_code=404, detail="Tea not found")
+    if not db_problem:
+        raise HTTPException(status_code=404, detail="problem not found")
 
-    if db_tea.user_id != current_user.id:
+    if db_problem.user_id != current_user.id:
         raise HTTPException(status_code=403, detail="Permission Denied")
 
-    tea_form_data = tea.dict(exclude_unset=True)
+    problem_form_data = problem.dict(exclude_unset=True)
 
-    for key, value in tea_form_data.items():
-        setattr(db_tea, key, value)
+    for key, value in problem_form_data.items():
+        setattr(db_problem, key, value)
 
     db.commit()
-    db.refresh(db_tea)
+    db.refresh(db_problem)
 
-    return db_tea
+    return db_problem
 
-@router.delete('/teas/{tea_id}')
-def delete_tea(tea_id: int, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
-    db_tea  = db.query(TeaModel).filter(TeaModel.id == tea_id).first()
+@router.delete('/problems/{problem_id}')
+def delete_problem(problem_id: int, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
+    db_problem  = db.query(ProblemModel).filter(ProblemModel.id == problem_id).first()
 
-    if not db_tea:
-        raise HTTPException(status_code=404, detail="Tea not found")
+    if not db_problem:
+        raise HTTPException(status_code=404, detail="problem not found")
 
-    if db_tea.user_id != current_user.id:
+    if db_problem.user_id != current_user.id:
         raise HTTPException(status_code=403, detail="Permission Denied")
 
-    db.delete(db_tea)
+    db.delete(db_problem)
     db.commit()
 
-    return { "message": f"Tea with id {tea_id} was deleted!" }
+    return { "message": f"problem with id {problem_id} was deleted!" }
