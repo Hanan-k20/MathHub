@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-class CommentSchema(BaseModel):
+class SolutionSchema(BaseModel):
   id: int
   content: str
 
@@ -8,13 +8,13 @@ class CommentSchema(BaseModel):
     orm_mode = True
 
 
-class CommentCreateSchema(BaseModel):
+class SolutionCreateSchema(BaseModel):
   content: str
 
   class Config:
     orm_mode = True
 
-class CommentUpdateSchema(BaseModel):
+class SolutionUpdateSchema(BaseModel):
   content: str
 
   class Config:
