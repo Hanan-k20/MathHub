@@ -1,21 +1,28 @@
 from pydantic import BaseModel
+from .user import UserSchema
 
-class CommentSchema(BaseModel):
+
+class SolutionSchema(BaseModel):
   id: int
   content: str
+  is_AI: bool
+  user:UserSchema
 
   class Config:
     orm_mode = True
 
 
-class CommentCreateSchema(BaseModel):
+class SolutionCreateSchema(BaseModel):
   content: str
+  
+  
 
   class Config:
     orm_mode = True
 
-class CommentUpdateSchema(BaseModel):
+class SolutionUpdateSchema(BaseModel):
   content: str
+  
 
   class Config:
     orm_mode = True
