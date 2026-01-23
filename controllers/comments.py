@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from models.comment import CommentModel
-from models.tea import TeaModel
+from models.problem import TeaModel
 from serializers.comment import CommentSchema, CommentCreateSchema, CommentUpdateSchema
 from typing import List
 from database import get_db

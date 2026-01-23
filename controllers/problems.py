@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException
 
 # SQL Alchemy
 from sqlalchemy.orm import Session
-from models.tea import TeaModel
+from models.problem import TeaModel
 from models.user import UserModel
 # Serializers
-from serializers.tea import TeaSchema, CreateTeaSchema, UpdateTeaSchema
+from serializers.problem import TeaSchema, CreateTeaSchema, UpdateTeaSchema
 from typing import List
 # Database Connection
 from database import get_db
