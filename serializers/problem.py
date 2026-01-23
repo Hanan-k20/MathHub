@@ -3,6 +3,7 @@
 from pydantic import BaseModel
 from typing import Optional, List
 from .solution import SolutionSchema
+from datetime import datetime 
 from .user import UserSchema
 
 # Whenever we send out json this will be our response
@@ -11,7 +12,7 @@ class ProblemSchema(BaseModel):
   title: str
   equation_LaTeX: str
   ai_Solution: str
-  created_At: datatime
+  created_At: datetime
   user: UserSchema
   Solutions: List[SolutionSchema] = []
 
@@ -20,17 +21,18 @@ class ProblemSchema(BaseModel):
 
 # These two below are specifically for req.body
 class CreateProblemSchema(BaseModel):
-  name: str
-  in_stock: bool
-  rating: int
+  title: str
+  equation_LaTeX: str
+
 
   class Config:
     orm_mode = True
 
 class UpdateProblemSchema(BaseModel):
-  name: str
-  in_stock: bool
-  rating: int
+  title: str
+  equation_LaTeX: str
+  ai_Solution: str
+
 
   class Config:
     orm_mode = True
