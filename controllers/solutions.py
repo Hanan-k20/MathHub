@@ -19,14 +19,14 @@ def get_solutions_for_problem(problem_id: int, db: Session = Depends(get_db)):
 def get_solutions(solution_id: int, db: Session = Depends(get_db)):
     solution = db.query(SolutionModel).filter(SolutionModel.id == solution_id).first()
     if not solution:
-        raise HTTPException(status_code=404, detail="Comment not found")
+        raise HTTPException(status_code=404, detail="solution not found")
     return solution
 
 @router.post("/problems/{problem_id}/solutions", response_model=SolutionSchema)
 def create_solution(problem_id: int, solution: SolutionCreateSchema, db: Session = Depends(get_db)):
     problem = db.query(ProblemModel).filter(ProblemModel.id == problem_id).first()
     if not problem:
-        raise HTTPException(status_code=404, detail="Tea not found")
+        raise HTTPException(status_code=404, detail="problem not found")
 
     new_solution = SolutionModel(**solution.dict(), problem_id=problem_id)
     db.add(new_solution)
