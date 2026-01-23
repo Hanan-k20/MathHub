@@ -2,13 +2,8 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
 # Controllers
-<<<<<<< HEAD
-from controllers.problems import router as TeasRouter
-from controllers.comments import router as CommentsRouter
-=======
 from controllers.problems import router as ProblemsRouter
 from controllers.solutions import router as SolutionsRouter
->>>>>>> main
 from controllers.users import router as UserRouter
 
 app = FastAPI()
