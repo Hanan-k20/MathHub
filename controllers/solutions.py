@@ -5,6 +5,8 @@ from models.problem import ProblemModel
 from serializers.solution import SolutionCreateSchema,SolutionSchema,SolutionUpdateSchema
 from typing import List
 from database import get_db
+from models.user import UserModel
+from dependencies.get_current_user import get_current_user
 
 router = APIRouter()
 
@@ -23,19 +25,19 @@ def get_solutions(solution_id: int, db: Session = Depends(get_db)):
     return solution
 
 @router.post("/problems/{problem_id}/solutions", response_model=SolutionSchema)
-def create_solution(problem_id: int, solution: SolutionCreateSchema, db: Session = Depends(get_db)):
+def create_solution(problem_id: int, solution: SolutionCreateSchema, db: Session = Depends(get_db),current_user: UserModel = Depends(get_current_user)):
     problem = db.query(ProblemModel).filter(ProblemModel.id == problem_id).first()
     if not problem:
         raise HTTPException(status_code=404, detail="problem not found")
 
-    new_solution = SolutionModel(**solution.dict(), problem_id=problem_id)
+    new_solution = SolutionModel(**solution.dict(), problem_id=problem_id, user_id=current_user.id)
     db.add(new_solution)
     db.commit()
     db.refresh(new_solution)
     return new_solution
 
 @router.put("/solutions/{solution_id}", response_model=SolutionSchema)
-def update_solution(solution_id: int, solution: SolutionUpdateSchema, db: Session = Depends(get_db)):
+def update_solution(solution_id: int, solution: SolutionUpdateSchema, db: Session = Depends(get_db),current_user: UserModel = Depends(get_current_user)):
     db_solution = db.query(SolutionModel).filter(SolutionModel.id == solution_id).first()
     if not db_solution:
         raise HTTPException(status_code=404, detail="solution not found")
@@ -49,7 +51,7 @@ def update_solution(solution_id: int, solution: SolutionUpdateSchema, db: Sessio
     return db_solution
 
 @router.delete("/solutions/{solution_id}")
-def delete_solution(solution_id: int, db: Session = Depends(get_db)):
+def delete_solution(solution_id: int, db: Session = Depends(get_db),current_user: UserModel = Depends(get_current_user)):
     db_solution = db.query(SolutionModel).filter(SolutionModel.id == solution_id).first()
     if not db_solution:
         raise HTTPException(status_code=404, detail="solution not found")
