@@ -7,6 +7,9 @@ class SolutionSchema(BaseModel):
   content: str
   is_AI: bool
   user:UserSchema
+  
+  votes_count: int = 0  
+  is_voted: bool = False 
 
   class Config:
     orm_mode = True
