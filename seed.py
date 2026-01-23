@@ -1,6 +1,6 @@
 # seed.py
 from sqlalchemy.orm import Session, sessionmaker
-from data.problem_data import teas_list, comments_list
+from data.problem_data import problems_list, solutions_list
 from data.user_data import user_list
 from config.environment import db_URI
 from sqlalchemy import create_engine
@@ -22,14 +22,14 @@ try:
     db.commit()
 
     # Seed teas first, as comments depend on them
-    db.add_all(teas_list)
+    db.add_all(problems_list)
     db.commit()
 
     # Seed comments after teas
-    db.add_all(comments_list)
+    db.add_all(solutions_list)
     db.commit()
     db.close()
 
-    print("Database seeding complete! 👋")
+    print("Database seeding complete! ")
 except Exception as e:
     print("An error occurred:", e)
