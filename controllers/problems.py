@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from models.problem import ProblemModel
 from models.user import UserModel
+from services import solve_math 
 # Serializers
 from serializers.problem import ProblemSchema, CreateProblemSchema, UpdateProblemSchema
 from typing import List
@@ -33,6 +34,13 @@ def get_single_problem(problem_id: int, db: Session = Depends(get_db)):
 @router.post('/problems', response_model=ProblemSchema)
 def create_problem(problem: CreateProblemSchema,  db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     new_problem = ProblemModel(**problem.dict(), user_id=current_user.id)
+    # db.add(new_problem)
+    # db.commit()
+    # db.refresh(new_problem)
+    
+    ai_solution = solve_math(new_problem.content) 
+    new_problem.solution = ai_solution 
+    
     db.add(new_problem)
     db.commit()
     db.refresh(new_problem)
