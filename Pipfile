@@ -13,6 +13,8 @@ sqlalchemy = "*"
 psycopg2-binary = "*"
 passlib = {extras = ["bcrypt"], version = "*"}
 pyjwt = "*"
+google-genai = "*"
+openai = "*"
 
 [dev-packages]
 
