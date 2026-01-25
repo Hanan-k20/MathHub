@@ -6,6 +6,13 @@ from config.environment import db_URI
 from sqlalchemy import create_engine
 from models.base import Base # import base model
 
+
+from models.base import Base 
+from models.user import UserModel
+from models.problem import ProblemModel
+from models.solution import SolutionModel
+from models.vote import VoteModel
+
 engine = create_engine(db_URI)
 SessionLocal = sessionmaker(bind=engine)
 

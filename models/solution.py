@@ -11,7 +11,7 @@ class SolutionModel(BaseModel):
   is_AI = Column(Boolean, default=False)
 
   # relationships
-  problem_id = Column(Integer, ForeignKey('problem.id', ondelete="CASCADE"), nullable=False)  
+  problem_id = Column(Integer, ForeignKey('problems.id', ondelete="CASCADE"), nullable=False)  
   problem = relationship('ProblemModel', back_populates='solutions', passive_deletes=True)
   
   user_id = Column(Integer, ForeignKey('users.id',  ondelete="CASCADE"), nullable=False)
