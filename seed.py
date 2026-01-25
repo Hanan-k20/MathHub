@@ -1,10 +1,20 @@
 # seed.py
 from sqlalchemy.orm import Session, sessionmaker
+from models.base import Base # import base model
+from sqlalchemy import create_engine
+
+from models.user import UserModel
+from models.problem import ProblemModel
+from models.solution import SolutionModel
+from models.vote import VoteModel
+from models.term import TermModel
+
 from data.problem_data import problems_list, solutions_list
 from data.user_data import user_list
 from config.environment import db_URI
-from sqlalchemy import create_engine
-from models.base import Base # import base model
+
+from sqlalchemy import text
+
 
 
 from models.base import Base 
@@ -18,10 +28,11 @@ SessionLocal = sessionmaker(bind=engine)
 
 try:
     print("Recreating database...")
-    # Drop and recreate tables to ensure a clean slate
-    Base.metadata.drop_all(bind=engine)
+    db = SessionLocal()
+    db.execute(text("DROP SCHEMA public CASCADE; CREATE SCHEMA public;"))
+    db.commit()
+    
     Base.metadata.create_all(bind=engine)
-
     print("Seeding the database...")
     db = SessionLocal()
 

@@ -9,9 +9,8 @@ from controllers.terms import router as termsRouter
 from controllers.users import router as UserRouter
 from database import engine
 from models.base import Base 
-import models.user, models.problem, models.term, models.solution 
+import models.user, models.problem, models.term, models.solution ,models.vote
 
-# هذا السطر هو الذي سيقوم بإنشاء الجداول فور تشغيل السيرفر
 Base.metadata.create_all(bind=engine)
 
 
