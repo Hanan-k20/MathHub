@@ -21,12 +21,10 @@ SessionLocal = sessionmaker(bind=engine)
 
 try:
     print("Recreating database...")
-    # Drop and recreate tables to ensure a clean slate
     db = SessionLocal()
     db.execute(text("DROP SCHEMA public CASCADE; CREATE SCHEMA public;"))
     db.commit()
     
-    # 2. إنشاء الجداول من جديد بناءً على الموديلات المعرفة
     Base.metadata.create_all(bind=engine)
     print("Seeding the database...")
     db = SessionLocal()
