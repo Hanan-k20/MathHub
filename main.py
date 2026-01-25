@@ -4,7 +4,16 @@ from fastapi.middleware.cors import CORSMiddleware
 # Controllers
 from controllers.problems import router as ProblemsRouter
 from controllers.solutions import router as SolutionsRouter
+from controllers.votes import router as VotesRouter
+from controllers.terms import router as termsRouter
 from controllers.users import router as UserRouter
+from database import engine
+from models.base import Base 
+import models.user, models.problem, models.term, models.solution 
+
+# هذا السطر هو الذي سيقوم بإنشاء الجداول فور تشغيل السيرفر
+Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI()
 
@@ -29,6 +38,8 @@ app.add_middleware(
 
 app.include_router(ProblemsRouter, prefix="/api")
 app.include_router(SolutionsRouter, prefix="/api")
+app.include_router(VotesRouter, prefix="/api")
+app.include_router(termsRouter, prefix="/api")
 app.include_router(UserRouter, prefix="/api")
 
 

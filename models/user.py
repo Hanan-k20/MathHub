@@ -22,6 +22,8 @@ class UserModel(BaseModel):
   problems = relationship('ProblemModel', back_populates='user', cascade="all, delete-orphan")
   solutions = relationship('SolutionModel', back_populates='user', cascade="all, delete-orphan")
   votes = relationship('VoteModel', back_populates='user', cascade="all, delete-orphan")
+  terms = relationship('TermModel', back_populates='user', cascade="all, delete-orphan")
+
 
 
   # INSTANCE METHODS

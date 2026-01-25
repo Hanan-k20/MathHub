@@ -8,10 +8,6 @@ class VoteModel(BaseModel):
 
   id = Column(Integer, primary_key=True, index=True)
   
-  
-
-  
-
   # relationships
   solution_id = Column(Integer, ForeignKey('solutions.id', ondelete="CASCADE"), nullable=False)
   solution = relationship("SolutionModel", back_populates="votes")
