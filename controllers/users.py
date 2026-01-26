@@ -24,8 +24,12 @@ def create_user(user: UserRegistrationSchema, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+    token = new_user.generate_token()
 
-    return new_user
+    # إرجاع التوكن كما فعلنا في الـ Login تماماً
+    return {"token": token, "message": "User created and logged in successfully"}
+
+    # return new_user
 
 @router.post("/login", response_model=UserTokenSchema)
 def login(user: UserLoginSchema, db: Session = Depends(get_db)):
