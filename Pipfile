@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 fastapi = "*"
 uvicorn = "*"
-pydantic = "*"
 bcrypt = "==4.0.1"
 python-dotenv = "*"
 sqlalchemy = "*"
@@ -15,6 +14,7 @@ passlib = {extras = ["bcrypt"], version = "*"}
 pyjwt = "*"
 google-genai = "*"
 openai = "*"
+pydantic = "*"
 
 [dev-packages]
 

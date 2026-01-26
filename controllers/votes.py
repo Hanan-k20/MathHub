@@ -27,24 +27,26 @@ def get_vote_by_id(vote_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="vote not found")
     return vote
 
-@router.post("/problems/{problem_id}/solutions/{solution_id}/votes", response_model=VoteSchema)
-def create_vote(problem_id: int,solution_id:int, vote: VoteCreateSchema, db: Session = Depends(get_db),current_user: UserModel = Depends(get_current_user)):
+
+@router.post("/problems/{problem_id}/solutions/{solution_id}/votes")
+def toggle_vote(problem_id: int, solution_id: int, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     solution = db.query(SolutionModel).filter(SolutionModel.id == solution_id).first()
     if not solution:
-        raise HTTPException(status_code=404, detail="vote not found")
+        raise HTTPException(status_code=404, detail="Solution not found")
 
-    new_vote = VoteModel(**vote.dict(), solution_id=solution_id, user_id=current_user.id)
+    existing_vote = db.query(VoteModel).filter(
+        VoteModel.solution_id == solution_id,
+        VoteModel.user_id == current_user.id
+    ).first()
+
+    if existing_vote:
+        db.delete(existing_vote)
+        db.commit()
+        return {"voted": False, "total_votes": len(solution.votes)}
+
+    new_vote = VoteModel(solution_id=solution_id, user_id=current_user.id)
     db.add(new_vote)
     db.commit()
     db.refresh(new_vote)
-    return new_vote
-
-@router.delete("/votes/{vote_id}")
-def delete_votes(vote_id: int, db: Session = Depends(get_db),current_user: UserModel = Depends(get_current_user)):
-    db_vote = db.query(VoteModel).filter(VoteModel.id == vote_id).first()
-    if not db_vote:
-        raise HTTPException(status_code=404, detail="vote not found")
-
-    db.delete(db_vote)
-    db.commit()
-    return {"message": f"Vote with ID {vote_id} has been deleted"}
+    
+    return {"voted": True, "total_votes": len(solution.votes)}
