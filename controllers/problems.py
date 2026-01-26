@@ -15,7 +15,6 @@ from dependencies.get_current_user import get_current_user
 
 router = APIRouter()
 
-
 @router.get("/problems", response_model=List[ProblemSchema])
 def get_problems(db: Session = Depends(get_db)):
     # Get all
