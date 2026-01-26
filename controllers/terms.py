@@ -42,7 +42,7 @@ def create_term(term: CreateTermSchema,  db: Session = Depends(get_db), current_
 
 @router.put('/terms/{term_id}', response_model=TermSchema)
 def update_term(term_id: int, term: UpdateTermSchema, db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
-    db_term = db.query(TermSchema).filter(TermSchema.id == term_id).first()
+    db_term = db.query(TermModel).filter(TermModel.id == term_id).first()
 
     if not db_term:
         raise HTTPException(status_code=404, detail="term not found")
