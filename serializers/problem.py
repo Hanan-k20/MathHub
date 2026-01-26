@@ -30,7 +30,6 @@ class CreateProblemSchema(BaseModel):
 class UpdateProblemSchema(BaseModel):
   title: str
   equation_LaTeX: str
-  ai_solution: str
 
 
   class Config:
