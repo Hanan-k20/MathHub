@@ -15,7 +15,6 @@ from dependencies.get_current_user import get_current_user
 
 router = APIRouter()
 
-
 @router.get("/problems", response_model=List[ProblemSchema])
 def get_problems(db: Session = Depends(get_db)):
     # Get all
@@ -81,3 +80,9 @@ def delete_problem(problem_id: int, db: Session = Depends(get_db), current_user:
     db.commit()
 
     return { "message": f"problem with id {problem_id} was deleted!" }
+
+@router.get("/cards")
+def get_all_cards(db: Session = Depends(get_db)):
+    problems = db.query(ProblemModel).all()
+    return problems 
+

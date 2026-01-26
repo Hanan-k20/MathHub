@@ -1,9 +1,7 @@
-# models/tea.py
 
 from sqlalchemy import Column, Integer, String, func, ForeignKey,DateTime,Text
 from sqlalchemy.orm import relationship
 from .base import BaseModel
-from .solution import SolutionModel
 from .user import UserModel
 
 
