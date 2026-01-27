@@ -33,9 +33,6 @@ def get_single_problem(problem_id: int, db: Session = Depends(get_db)):
 @router.post('/problems', response_model=ProblemSchema)
 def create_problem(problem: CreateProblemSchema,  db: Session = Depends(get_db), current_user: UserModel = Depends(get_current_user)):
     new_problem = ProblemModel(**problem.dict(), user_id=current_user.id)
-    # db.add(new_problem)
-    # db.commit()
-    # db.refresh(new_problem)
     
     ai_solution = solve_math(new_problem.equation_LaTeX) 
     new_problem.ai_solution = ai_solution 
@@ -57,6 +54,10 @@ def update_problem(problem_id: int, problem: UpdateProblemSchema, db: Session = 
         raise HTTPException(status_code=403, detail="Permission Denied")
 
     problem_form_data = problem.dict(exclude_unset=True)
+    
+    if "equation_LaTeX" in problem_form_data:
+        new_equation = problem_form_data["equation_LaTeX"]
+        db_problem.ai_solution = solve_math(new_equation)
 
     for key, value in problem_form_data.items():
         setattr(db_problem, key, value)

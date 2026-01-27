@@ -13,7 +13,7 @@ class ProblemSchema(BaseModel):
   ai_solution: str
   created_At: datetime
   user: UserSchema
-  Solutions: List[SolutionSchema] = []
+  solutions: List[SolutionSchema] = []
 
   class Config:
     orm_mode = True
