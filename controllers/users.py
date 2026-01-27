@@ -6,7 +6,8 @@ from serializers.user import UserSchema, UserRegistrationSchema, UserLoginSchema
 from database import get_db
 
 router = APIRouter()
-@router.post("/register")
+
+@router.post("/register", response_model=UserTokenSchema)
 def create_user(user: UserRegistrationSchema, db: Session = Depends(get_db)):
     existing_user = db.query(UserModel).filter(
         (UserModel.username == user.username) | (UserModel.email == user.email)
@@ -22,10 +23,16 @@ def create_user(user: UserRegistrationSchema, db: Session = Depends(get_db)):
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
-
         token = new_user.generate_token()
+
+        return {
+            "token": token,
+            "message": "User created and logged in successfully",
+            "username": user.username, 
+            "email": user.email         
+        }
         
-        return {"token": token, "message": "Success"}
+    # return new_user
 
     except Exception as e:
         print(f"CRITICAL ERROR DURING REGISTER: {str(e)}")
