@@ -11,7 +11,7 @@ class ProblemModel(BaseModel):
     __tablename__ = "problems"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, unique=True)
+    title = Column(String, nullable=False)
     equation_LaTeX = Column(String)
     ai_solution = Column(Text,nullable=True)
     created_At= Column(DateTime(timezone=True), server_default=func.now())
