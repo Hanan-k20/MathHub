@@ -18,7 +18,7 @@ app = FastAPI()
 
 # CORS ✅ Allow your React dev server(s) to call the API
 origins = [
-    "*"
+    "*",
     # "http://localhost:5173",
     # "http://127.0.0.1:5173",
     # Later, add your deployed frontend origin, e.g.:
@@ -51,6 +51,6 @@ def help():
 def home(mamamia: str = Depends(help)):
     return {"message": mamamia}
 
-@app.get("/health")
+@app.get("/api/health")
 def health_check():
     return {"ok": True}
